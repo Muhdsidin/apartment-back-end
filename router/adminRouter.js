@@ -13,7 +13,7 @@ cloudinary.config({
 router.get("/upload",upload.array("images"),async(req,res)=>{
     try {
         
-    const {title , prize , location } = req.body
+    const {title , prize , location } = req.query
     const imageOne = req.files[0];
     const imageTwo = req.files[1];
     const imageThree = req.files[2];

@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const connectDatabase = require("./config/db");
-//const adminRoutes = require("./router/adminRouter");
+const adminRoutes = require("./router/adminRouter");
 const ProductModel = require("./models/Product-Model");
 
 const PORT = process.env.PORT || 3000;
@@ -38,6 +38,6 @@ app.get('/', async (req, res) => {
 });
 
 // Router initializations
-//app.use("/admin", adminRoutes);
+app.use("/admin", adminRoutes);
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
