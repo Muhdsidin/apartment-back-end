@@ -38,6 +38,6 @@ app.get('/', async (req, res) => {
 });
 
 // Router initializations
-app.use("/admin", adminRoutes);
+app.use("/", adminRoutes);
 
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
