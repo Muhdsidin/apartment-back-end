@@ -6,12 +6,6 @@
         "use": "@vercel/node"
       }
     ],
-    "functions": {
-      "api/upload": {
-        "maxDuration": 30 
-      }
-
-    },
     "routes": [
       {
         "src": "/(.*)",
