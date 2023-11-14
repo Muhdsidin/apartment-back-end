@@ -7,7 +7,7 @@ const ProductModel =  new mongoose.Schema({
         min: 20
     },
     prize:{
-        type:Number,
+        type:String,
         require:true
     },
     imageUrl:[
