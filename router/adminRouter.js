@@ -17,7 +17,7 @@ const upload = multer({
 
 router.post("/upload", upload.array("images"), async (req, res) => {
   try {
-    const { title, prize, location } = req.body;
+    const { title, prize} = req.body;
     const uploadPromises = req.files.map(async (file) => {
       const result = await cloudinary.uploader.upload(file.buffer, {
         folder: "rooms",
@@ -30,7 +30,7 @@ router.post("/upload", upload.array("images"), async (req, res) => {
     const uploadToDatabase = await ProductModel.create({
       title,
       prize,
-      location,
+   
       imageUrl: imageUrls,
     });
 
