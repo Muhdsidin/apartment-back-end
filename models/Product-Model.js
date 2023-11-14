@@ -13,10 +13,7 @@ const ProductModel =  new mongoose.Schema({
     imageUrl:[
 
     ],
-    location:{
-        type:String,
-        require: true,
-    }
+    
 },{strict:false})
 
 module.exports = mongoose.model("Rooms",ProductModel)
