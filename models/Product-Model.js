@@ -10,10 +10,8 @@ const ProductModel =  new mongoose.Schema({
         type:Number,
         require:true
     },
-    imageUrl:[
-
-    ],
-    location:{
+   
+    number:{
         type:String,
         require: true,
     }
