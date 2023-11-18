@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const ProductModel = require("../models/Product-Model");
+const BuildModel = require("../models/Build-Model");
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -15,14 +16,30 @@ const upload = multer({
   storage: storage,
 });
 
+router.post("/upload-building", async(req,res)=>{
+ try {
+  const {title, location} = req.body
+  const upload = await BuildModel.create({
+    title,
+    location
+  })
+ } catch (error) {
+  console.log(error)
+  res.status(404).json({
+    message:`error from backend${error}`
+  })
+ }
+})
+
 router.post("/upload",async (req, res) => {
   try {
-    const { title, prize, number } = req.body;
+    const { title, prize, number, buildingId } = req.body;
 
     const uploadToDatabase = await ProductModel.create({
       title,
       prize,
-      number
+      number,
+      building: buildingId
     });
 
     res.status(200).json({
@@ -36,5 +53,7 @@ router.post("/upload",async (req, res) => {
     });
   }
 });
+
+
 
 module.exports = router;

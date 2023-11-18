@@ -10,10 +10,13 @@ const ProductModel =  new mongoose.Schema({
         type:Number,
         require:true
     },
-   
     number:{
         type:String,
         require: true,
+    },
+    building:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"buiding"
     }
 },{strict:false})
 
