@@ -7,16 +7,15 @@ const ProductModel =  new mongoose.Schema({
         min: 20
     },
     prize:{
-        type:Number,
+        type:String,
         require:true
     },
-    number:{
+    imageUrl:[
+
+    ],
+    location:{
         type:String,
         require: true,
-    },
-    building:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"buiding"
     }
 },{strict:false})
 
