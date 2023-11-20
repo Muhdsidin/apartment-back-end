@@ -39,9 +39,10 @@ router.post("/upload",async (req, res) => {
       title,
       prize,
       number,
-      building: buildingId
     });
 
+    const findByBuild = await BuildModel.findByIdAndUpdate(buildingId, {$push:{rooms:buildingId}})
+    
     res.status(200).json({
       message: "Successfully Uploaded",
     });

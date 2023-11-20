@@ -10,7 +10,7 @@ const ProductModel =  new mongoose.Schema({
         type:String,
         require:true
     },
-    location:{
+    number:{
         type:String,
         require: true,
     }
