@@ -1,20 +1,30 @@
 const mongoose = require("mongoose")
 
 const Build = new mongoose.Schema({
-    title:{
-        type:String,
-        require: true
+    name: {
+      type: String,
+      required: true,
     },
-    location:{
-        type:String,
-        require: true
+    address: {
+      type: String,
+      required: true,
     },
-    rooms:[
-       {
+    zip: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    natural: [
+      {
             type: mongoose.Schema.Types.ObjectId,
-            ref:"rooms"
-        },
-    ]
-},{strict: false})
+            ref: 'Rooms', // Replace 'Rooms' with the actual model name for rooms
+          },
 
-module.exports = mongoose.model("building", Build)
+      ],
+  }, { strict: false });
+
+  module.exports = mongoose.model("building", Build)
+  

@@ -18,10 +18,26 @@ const upload = multer({
 
 router.post("/upload-building", async(req,res)=>{
  try {
-  const {title, location} = req.body
+  const {
+    name,
+    zip,
+    state,
+    address,
+    city} = req.body
+
+  console.log(req.body)
   const upload = await BuildModel.create({
-    title,
-    location
+    name,
+    zip,
+    state,
+    address,
+    city
+  })
+
+  console.log(upload)
+
+  res.status(200).json({
+    message:"SuccussFully Uploaded"
   })
  } catch (error) {
   console.log(error)
@@ -31,30 +47,82 @@ router.post("/upload-building", async(req,res)=>{
  }
 })
 
+router.get("/get-building",async(req,res)=>{
+  const BuildData = await BuildModel.find()
+  if(!BuildData){
+    return res.status(402).json({
+      message:" sorry there Is No Building "
+    })
+  }
+  console.log(BuildData)
+  res.status(200).json(BuildData)
+})
+ 
 router.post("/upload",async (req, res) => {
   try {
-    const { title, prize, number, buildingId } = req.body;
+    const { title, prize,  buildingId } = req.body;
 
     const uploadToDatabase = await ProductModel.create({
       title,
       prize,
-      number,
+ 
     });
 
-    const findByBuild = await BuildModel.findByIdAndUpdate(buildingId, {$push:{rooms:buildingId}})
+    const findByBuild = await BuildModel.findByIdAndUpdate(buildingId,{$push:{natural:uploadToDatabase._id}})
+    if(!findByBuild){
+      return res.status(402).json({
+        message:"sorry this building is not found "
+      })
+    }
+
+
     
-    res.status(200).json({
-      message: "Successfully Uploaded",
-    });
+    res.status(200).json(findByBuild);
   } catch (error) {
     console.error("Error in upload route:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
+    res.status(500).json({ 
+      message: "Internal Server Error", 
       error: error.message,
     });
   }
 });
 
+router.get("/get-room/", async (req, res) => {
+  const { buildid } = req.headers;
+
+  try {
+    const build = await BuildModel.findOne({ _id: buildid }).populate('natural');
+    console.log(build);
+    res.status(200).json(build);
+  } catch (error) {
+    console.error("Error fetching building:", error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message, 
+    });
+  }   
+});  
+
+router.get("/get-active-room", async (req,res)=>{
+  try {
+    const {roomid} = req.headers
+
+  const result = await ProductModel.findById(roomid)
+
+  if(!result){
+    return res.status(401).json({
+      message:"Sorry there is no identity is there"
+    })
+  }
+
+  res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+    res.status(402).json({
+      message:"Sorry error message from server "
+    })
+  }
+})
 
 
 module.exports = router;
