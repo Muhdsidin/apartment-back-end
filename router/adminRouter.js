@@ -39,6 +39,9 @@ router.post("/upload-building", async(req,res)=>{
   res.status(200).json({
     message:"SuccussFully Uploaded"
   })
+   res.status(200).json({
+     message:"Uploaded"
+   })
  } catch (error) {
   console.log(error)
   res.status(404).json({
