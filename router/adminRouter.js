@@ -63,12 +63,13 @@ router.get("/get-building",async(req,res)=>{
  
 router.post("/upload",async (req, res) => {
   try {
-    const { title, prize,  buildingId } = req.body;
+    const { title, prize,  buildingId ,  number} = req.body;
 
     const uploadToDatabase = await ProductModel.create({
       title,
       prize,
- 
+
+      number
     });
 
     const findByBuild = await BuildModel.findByIdAndUpdate(buildingId,{$push:{natural:uploadToDatabase._id}})
