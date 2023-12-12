@@ -5,16 +5,18 @@ const ProductModel = require("../models/Product-Model");
 const bookRoom = async (req, res) => {
   try {
     console.log("hello world ");
-    const { name, address, state, roomNo, region, country } = req.body;
+    const { name, address, state, RoomId, region, country } = req.body;
+    console.log(req.body)
 
     const upload = await BookModel.create({
       name,
       address,
       state,
-      roomNo,
+      roomNo:RoomId,
       region,
       country,
     });
+    console.log(upload)
 
     if (!upload) {
       return res.status(400).json({
