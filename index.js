@@ -21,21 +21,11 @@ connectDatabase()
 app.use(cors());
 app.use(express.json());
 
-app.get('/', async (req, res) => {
-  try {
-    // Assuming ProductModel.create() requires some data to be passed
-    const newData = { /* provide data here */ name:"sidin"};
-    await ProductModel.create(newData);
-    res.status(200).json({
-      message: "Data created successfully",
-    });
-  } catch (error) {
-    console.error("Error creating data:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-    });
-  }
-});
+app.get("/",(req,res)=>{
+  res.status(200).json({
+    message:"Hello world "
+  })
+})
 
 // Router initializations
 app.use("/", adminRoutes);

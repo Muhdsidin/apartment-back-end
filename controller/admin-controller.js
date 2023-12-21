@@ -24,9 +24,7 @@ const bookRoom = async (req, res) => {
       });
     }
 
-    res.status(200).json({
-      message: "Successfully Booked Your Room ",
-    });
+    res.status(200).json(upload);
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -148,11 +146,59 @@ const uploadBuilding = async (req, res) => {
   }
 }
 
+const getAllBookedRooms =async (req,res)=>{
+  try {
+    const data = await BookModel.find()
+    if(data.length == 0){
+     return res.status(400).json({
+        message:"THERE IS NO ONE BOOKED "
+      })
+    }
+    res.status(200).json(data)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+      message:"SERVER ERROR IS FOUNDED"
+    })
+  }
+}
+
+const TerminateBook = async(req,res)=>{
+  try {
+    
+  const {BookId} = req.body
+  const terminate = await BookModel.findByIdAndDelete(BookId)
+  const data = await BookModel.find()
+  res.status(200).json(data)
+  } catch (error) {
+   console.log(error)
+   res.status(400).json({
+    message:"server error"
+   }) 
+  }
+}
+
+const getSpecificTannent = async (req,res)=>{
+  try {
+    const {id} = req.headers
+  const data = await BookModel.findById(id)
+  res.status(200).json(data)
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({
+     message:"server error"
+    }) 
+  }
+}
+
 module.exports = {
   bookRoom,
   activeRoomList,
   getAllRoom,
   uploadRoom,
   getAllBuilding,
-  uploadBuilding
+  uploadBuilding,
+  getAllBookedRooms,
+  TerminateBook,
+  getSpecificTannent
 };
