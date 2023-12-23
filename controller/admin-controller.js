@@ -191,6 +191,22 @@ const getSpecificTannent = async (req,res)=>{
   }
 }
 
+const deleteRoom = async(req,res)=>{
+  const {roomId} = req.body
+  const dltRoom = await ProductModel.findByIdAndDelete(roomId) 
+  res.status(200).json({
+    message:"just refresh"
+  })
+}
+
+const updateRoom = async(req,res)=>{
+  const {title , id , prize} = req.body
+  const update = await ProductModel.findByIdAndUpdate(id,{$set:{title:title ,prize:prize}})
+  res.status(200).json({
+    message:"succesfully updated "
+  })
+}
+
 module.exports = {
   bookRoom,
   activeRoomList,
@@ -200,5 +216,7 @@ module.exports = {
   uploadBuilding,
   getAllBookedRooms,
   TerminateBook,
-  getSpecificTannent
+  getSpecificTannent,
+  deleteRoom,
+  updateRoom
 };
