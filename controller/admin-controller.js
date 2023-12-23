@@ -6,7 +6,7 @@ const bookRoom = async (req, res) => {
   try {
     console.log("hello world ");
     const { name, address, state, RoomId, region, country } = req.body;
-    console.log(req.body)
+    console.log(req.body)     
 
     const upload = await BookModel.create({
       name,
@@ -105,12 +105,6 @@ const uploadRoom = async (req, res) => {
 const getAllBuilding = async (req, res) => {
 try {
   const BuildData = await BuildModel.find();
-  if (!BuildData) {
-    return res.status(402).json({
-      message: " sorry there Is No Building ",
-    });
-  }
-  console.log(BuildData);
   res.status(200).json(BuildData);
 } catch (error) {
   console.log(error);
