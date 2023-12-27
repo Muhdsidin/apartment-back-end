@@ -24,6 +24,14 @@ const BookModel = new mongoose.Schema({
     state:{
         type:String,
         require:true
+    },
+    to:{
+        type:String,
+        require:true
+    },
+    from:{
+        type:String,
+        require:true
     }
 },{strict:false})
 

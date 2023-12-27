@@ -5,18 +5,20 @@ const ProductModel = require("../models/Product-Model");
 const bookRoom = async (req, res) => {
   try {
     console.log("hello world ");
-    const { name, address, state, RoomId, region, country } = req.body;
-    console.log(req.body)     
+    const { name, address, state, RoomId, region, country , from , to  } = req.body;
+    console.log(req.body);
 
     const upload = await BookModel.create({
       name,
       address,
       state,
-      roomNo:RoomId,
+      roomNo: RoomId,
       region,
       country,
+      from,
+      to
     });
-    console.log(upload)
+    console.log(upload);
 
     if (!upload) {
       return res.status(400).json({
@@ -103,15 +105,15 @@ const uploadRoom = async (req, res) => {
 };
 
 const getAllBuilding = async (req, res) => {
-try {
-  const BuildData = await BuildModel.find();
-  res.status(200).json(BuildData);
-} catch (error) {
-  console.log(error);
-  res.status(404).json({
-    message: `error from backend${error}`,
-  });
-}
+  try {
+    const BuildData = await BuildModel.find();
+    res.status(200).json(BuildData);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({
+      message: `error from backend${error}`,
+    });
+  }
 };
 
 const uploadBuilding = async (req, res) => {
@@ -138,67 +140,104 @@ const uploadBuilding = async (req, res) => {
       message: `error from backend${error}`,
     });
   }
-}
+};
 
-const getAllBookedRooms =async (req,res)=>{
+const getAllBookedRooms = async (req, res) => {
   try {
-    const data = await BookModel.find()
-    if(data.length == 0){
+    const data = await BookModel.find();
+    /*  if(data.length == 0){
      return res.status(400).json({
         message:"THERE IS NO ONE BOOKED "
       })
-    }
-    res.status(200).json(data)
+    }*/ // front-end issue so we will soon
+    res.status(200).json(data);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({
-      message:"SERVER ERROR IS FOUNDED"
-    })
+      message: "SERVER ERROR IS FOUNDED",
+    });
   }
-}
+};
 
-const TerminateBook = async(req,res)=>{
+const TerminateBook = async (req, res) => {
   try {
-    
-  const {BookId} = req.body
-  const terminate = await BookModel.findByIdAndDelete(BookId)
-  const data = await BookModel.find()
-  res.status(200).json(data)
+    const { BookId } = req.body;
+    const terminate = await BookModel.findByIdAndDelete(BookId);
+    const data = await BookModel.find();
+    res.status(200).json(data);
   } catch (error) {
-   console.log(error)
-   res.status(400).json({
-    message:"server error"
-   }) 
-  }
-}
-
-const getSpecificTannent = async (req,res)=>{
-  try {
-    const {id} = req.headers
-  const data = await BookModel.findById(id)
-  res.status(200).json(data)
-  } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({
-     message:"server error"
-    }) 
+      message: "server error",
+    });
   }
-}
+};
 
-const deleteRoom = async(req,res)=>{
-  const {roomId} = req.body
-  const dltRoom = await ProductModel.findByIdAndDelete(roomId) 
-  res.status(200).json({
-    message:"just refresh"
-  })
-}
+const getSpecificTannent = async (req, res) => {
+  try {
+    const { id } = req.headers;
+    console.log(id)
+    const data = await BookModel.findById(id);
+    console.log(data)
+    res.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "server error",
+    });
+  }
+};
 
-const updateRoom = async(req,res)=>{
-  const {title , id , prize} = req.body
-  const update = await ProductModel.findByIdAndUpdate(id,{$set:{title:title ,prize:prize}})
+const deleteRoom = async (req, res) => {
+  try {
+    const { roomId } = req.body;
+    const dltRoom = await ProductModel.findByIdAndDelete(roomId);
+    res.status(200).json({
+      message: "just refresh",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "server error",
+    });
+  }
+};
+
+const updateRoom = async (req, res) => {
+  try {
+    const { title, id, prize } = req.body;
+    const update = await ProductModel.findByIdAndUpdate(id, {
+      $set: { title: title, prize: prize },
+    });
+    res.status(200).json({
+      message: "succesfully updated ",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "server error",
+    });
+  }
+};
+
+
+
+const EditTannent = async (req,res)=>{
+  console.log(req.body)
+  const {name , address , region , country , state , TannentId} = req.body
+  const findandUpdate = await BookModel.findByIdAndUpdate(TannentId , {$set:{
+    name,
+    address,
+    region,
+    country,
+    state
+  }})
+
   res.status(200).json({
-    message:"succesfully updated "
+    message:" succesfully Updated "
   })
+
+
 }
 
 module.exports = {
@@ -212,5 +251,7 @@ module.exports = {
   TerminateBook,
   getSpecificTannent,
   deleteRoom,
-  updateRoom
+  updateRoom,
+  EditTannent,
+ 
 };

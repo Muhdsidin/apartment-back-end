@@ -12,9 +12,11 @@ const {
   uploadBuilding,
   getAllBookedRooms,
   TerminateBook,
-  getSpecificTannent,
+  
   deleteRoom,
   updateRoom,
+  EditTannent,
+  getSpecificTannent,
 } = require("../controller/admin-controller");
 
 router.post("/upload-building", uploadBuilding);
@@ -28,5 +30,6 @@ router.post("/terminate",TerminateBook)
 router.get("/get-specific-tannent",getSpecificTannent)
 router.post("/delete-room",deleteRoom)
 router.post("/update-room",updateRoom)
+router.post("/update-tannent", EditTannent)
 
 module.exports = router;
