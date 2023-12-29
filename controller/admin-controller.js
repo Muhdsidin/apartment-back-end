@@ -7,6 +7,8 @@ const bookRoom = async (req, res) => {
     console.log("hello world ");
     const { name, address, state, RoomId, region, country , from , to  } = req.body;
     console.log(req.body);
+    const updateTheRoom = await ProductModel.findByIdAndUpdate(RoomId , {$set:{book:"true"}})
+    console.log(updateTheRoom)
 
     const upload = await BookModel.create({
       name,
@@ -240,6 +242,48 @@ const EditTannent = async (req,res)=>{
 
 }
 
+const deleteBuilding = async(req,res)=>{
+  try {
+    const {BuildId} = req.body
+    const deleteById = await BuildModel.findByIdAndDelete(BuildId)
+    const result = await BuildModel.find()
+
+    res.status(200).json(result)
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "server error",
+    });
+  }
+}
+
+const GetOneRoom = async(req,res)=>{
+ try {
+  const {id} = req.headers
+  const findOne = await BuildModel.findById(id)
+  res.status(200).json(findOne)
+ } catch (error) {
+  console.log(error);
+  res.status(400).json({
+    message: "server error",
+  });
+ }
+}
+
+
+const UpdateBuilding = async (req,res)=>{
+  const { name, zip, state, address, city , id} = req.body;
+  const upadteAll = await BuildModel.findByIdAndUpdate(id , {$set:{
+    name,
+    zip,
+    state,
+    address,
+    city
+  }})
+  res.status(200).json({
+    message:"successFully Updated"
+  })
+}
 module.exports = {
   bookRoom,
   activeRoomList,
@@ -253,5 +297,7 @@ module.exports = {
   deleteRoom,
   updateRoom,
   EditTannent,
- 
+  deleteBuilding,
+  GetOneRoom,
+  UpdateBuilding
 };

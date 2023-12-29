@@ -13,6 +13,10 @@ const ProductModel =  new mongoose.Schema({
     number:{
         type:String,
         require: true,
+    },
+    book : {
+        type: Boolean,
+        require: true,
     }
 },{strict:false})
 
