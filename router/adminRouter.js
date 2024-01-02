@@ -19,6 +19,7 @@ const {
   deleteBuilding,
   GetOneRoom,
   UpdateBuilding,
+  SearchTannent,
 } = require("../controller/admin-controller");
 
 router.post("/upload-building", uploadBuilding);
@@ -69,5 +70,7 @@ router.get("/get-specific-tannent",getSpecificTannent)
 router.post("/delete-room",deleteRoom)
 router.post("/update-room",updateRoom)
 router.post("/update-tannent", EditTannent)
+
+router.get("/:item",SearchTannent)
 
 module.exports = router;

@@ -284,6 +284,13 @@ const UpdateBuilding = async (req,res)=>{
     message:"successFully Updated"
   })
 }
+
+const SearchTannent = async(req,res)=>{
+  const {item} = req.params
+  const findbyitem = await BookModel.findOne({name:item})
+  console.log(findbyitem)
+  res.status(200).json(findbyitem)
+}
 module.exports = {
   bookRoom,
   activeRoomList,
@@ -299,5 +306,6 @@ module.exports = {
   EditTannent,
   deleteBuilding,
   GetOneRoom,
-  UpdateBuilding
+  UpdateBuilding,
+  SearchTannent
 };
