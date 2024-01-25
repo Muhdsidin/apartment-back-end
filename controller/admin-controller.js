@@ -1,14 +1,18 @@
 const BookModel = require("../models/Book-Model");
 const BuildModel = require("../models/Build-Model");
 const ProductModel = require("../models/Product-Model");
+const RecycleModel = require("../models/Recycle-Model");
 
 const bookRoom = async (req, res) => {
   try {
     console.log("hello world ");
-    const { name, address, state, RoomId, region, country , from , to  } = req.body;
+    const { name, address, state, RoomId, region, country, from, to } =
+      req.body;
     console.log(req.body);
-    const updateTheRoom = await ProductModel.findByIdAndUpdate(RoomId , {$set:{book:"true"}})
-    console.log(updateTheRoom)
+    const updateTheRoom = await ProductModel.findByIdAndUpdate(RoomId, {
+      $set: { book: "true" },
+    });
+    console.log(updateTheRoom);
 
     const upload = await BookModel.create({
       name,
@@ -18,7 +22,7 @@ const bookRoom = async (req, res) => {
       region,
       country,
       from,
-      to
+      to,
     });
     console.log(upload);
 
@@ -164,13 +168,27 @@ const getAllBookedRooms = async (req, res) => {
 const TerminateBook = async (req, res) => {
   try {
     const { BookId } = req.body;
+
     const terminate = await BookModel.findByIdAndDelete(BookId);
+
+    let RecycleData = await RecycleModel.findOne();
+
+    if (!RecycleData) {
+      RecycleData = new RecycleModel();
+    }
+    console.log(await RecycleModel.find() , "======================")
+    RecycleData.data.push(terminate);
+
+    await RecycleData.save();
+
+    console.log(RecycleData);
+
     const data = await BookModel.find();
     res.status(200).json(data);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "server error",
+    console.error(error);
+    res.status(500).json({
+      message: "Server error",
     });
   }
 };
@@ -178,9 +196,9 @@ const TerminateBook = async (req, res) => {
 const getSpecificTannent = async (req, res) => {
   try {
     const { id } = req.headers;
-    console.log(id)
+    console.log(id);
     const data = await BookModel.findById(id);
-    console.log(data)
+    console.log(data);
     res.status(200).json(data);
   } catch (error) {
     console.log(error);
@@ -222,75 +240,76 @@ const updateRoom = async (req, res) => {
   }
 };
 
-
-
-const EditTannent = async (req,res)=>{
-  console.log(req.body)
-  const {name , address , region , country , state , TannentId} = req.body
-  const findandUpdate = await BookModel.findByIdAndUpdate(TannentId , {$set:{
-    name,
-    address,
-    region,
-    country,
-    state
-  }})
+const EditTannent = async (req, res) => {
+  console.log(req.body);
+  const { name, address, region, country, state, TannentId } = req.body;
+  const findandUpdate = await BookModel.findByIdAndUpdate(TannentId, {
+    $set: {
+      name,
+      address,
+      region,
+      country,
+      state,
+    },
+  });
 
   res.status(200).json({
-    message:" succesfully Updated "
-  })
+    message: " succesfully Updated ",
+  });
+};
 
-
-}
-
-const deleteBuilding = async(req,res)=>{
+const deleteBuilding = async (req, res) => {
   try {
-    const {BuildId} = req.body
-    const deleteById = await BuildModel.findByIdAndDelete(BuildId)
-    const result = await BuildModel.find()
+    const { BuildId } = req.body;
+    const deleteById = await BuildModel.findByIdAndDelete(BuildId);
+    const result = await BuildModel.find();
 
-    res.status(200).json(result)
+    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(400).json({
       message: "server error",
     });
   }
-}
+};
 
-const GetOneRoom = async(req,res)=>{
- try {
-  const {id} = req.headers
-  const findOne = await BuildModel.findById(id)
-  res.status(200).json(findOne)
- } catch (error) {
-  console.log(error);
-  res.status(400).json({
-    message: "server error",
+const GetOneRoom = async (req, res) => {
+  try {
+    const { id } = req.headers;
+    const findOne = await BuildModel.findById(id);
+    res.status(200).json(findOne);
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({
+      message: "server error",
+    });
+  }
+};
+
+const UpdateBuilding = async (req, res) => {
+  const { name, zip, state, address, city, id } = req.body;
+  const upadteAll = await BuildModel.findByIdAndUpdate(id, {
+    $set: {
+      name,
+      zip,
+      state,
+      address,
+      city,
+    },
   });
- }
-}
-
-
-const UpdateBuilding = async (req,res)=>{
-  const { name, zip, state, address, city , id} = req.body;
-  const upadteAll = await BuildModel.findByIdAndUpdate(id , {$set:{
-    name,
-    zip,
-    state,
-    address,
-    city
-  }})
   res.status(200).json({
-    message:"successFully Updated"
-  })
-}
+    message: "successFully Updated",
+  });
+};
 
-const SearchTannent = async(req,res)=>{
-  const {item} = req.params
-  const findbyitem = await BookModel.findOne({name:item})
-  console.log(findbyitem)
-  res.status(200).json(findbyitem)
-}
+const SearchTannent = async (req, res) => {
+  const { item } = req.params;
+  const findbyitem = await BookModel.findOne({ name: item });
+  console.log(findbyitem);
+  res.status(200).json(findbyitem);
+};
+
+
 module.exports = {
   bookRoom,
   activeRoomList,
@@ -302,10 +321,10 @@ module.exports = {
   TerminateBook,
   getSpecificTannent,
   deleteRoom,
-  updateRoom,
+  updateRoom, 
   EditTannent,
   deleteBuilding,
   GetOneRoom,
   UpdateBuilding,
-  SearchTannent
+  SearchTannent,
 };

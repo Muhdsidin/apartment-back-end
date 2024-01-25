@@ -20,7 +20,9 @@ const {
   GetOneRoom,
   UpdateBuilding,
   SearchTannent,
+  terminatedBook,
 } = require("../controller/admin-controller");
+const RecycleModel = require("../models/Recycle-Model");
 
 router.post("/upload-building", uploadBuilding);
 router.post("/delete-building", deleteBuilding)
@@ -72,5 +74,27 @@ router.post("/update-room",updateRoom)
 router.post("/update-tannent", EditTannent)
 
 router.get("/:item",SearchTannent)
+
+
+router.get("/amo", async (req, res) => {
+  try {
+    let RecycleData = await RecycleModel.find();
+
+    if (RecycleData.length === 0) {
+      RecycleData = new RecycleModel();
+    }
+
+    console.log(RecycleData, "======================");
+
+    res.status(200).json({
+      message: "hello world",
+      data: RecycleData,
+    });
+  } catch (error) {
+    console.error("Error in /amo route:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
 
 module.exports = router;
