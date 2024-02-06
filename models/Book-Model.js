@@ -32,6 +32,10 @@ const BookModel = new mongoose.Schema({
     from:{
         type:String,
         require:true
+    },
+    terminate :{
+        type:Boolean,
+        require:true
     }
 },{strict:false})
 

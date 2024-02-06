@@ -1,7 +1,7 @@
 const BookModel = require("../models/Book-Model");
 const BuildModel = require("../models/Build-Model");
 const ProductModel = require("../models/Product-Model");
-const RecycleModel = require("../models/Recycle-Model");
+
 
 const bookRoom = async (req, res) => {
   try {
@@ -169,19 +169,9 @@ const TerminateBook = async (req, res) => {
   try {
     const { BookId } = req.body;
 
-    const terminate = await BookModel.findByIdAndDelete(BookId);
+    const terminate = await BookModel.findByIdAndUpdate(BookId , {$set:{terminate:true}})
 
-    let RecycleData = await RecycleModel.findOne();
 
-    if (!RecycleData) {
-      RecycleData = new RecycleModel();
-    }
-    console.log(await RecycleModel.find() , "======================")
-    RecycleData.data.push(terminate);
-
-    await RecycleData.save();
-
-    console.log(RecycleData);
 
     const data = await BookModel.find();
     res.status(200).json(data);
