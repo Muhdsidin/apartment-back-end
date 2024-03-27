@@ -1,6 +1,7 @@
 const BookModel = require("../models/Book-Model");
 const BuildModel = require("../models/Build-Model");
 const ProductModel = require("../models/Product-Model");
+const { catchError } = require("../utils/error");
 
 
 const bookRoom = async (req, res) => {
@@ -34,10 +35,7 @@ const bookRoom = async (req, res) => {
 
     res.status(200).json(upload);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      errro: "server issue",
-    });
+    catchError()
   }
 };
 
@@ -55,10 +53,7 @@ const activeRoomList = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.log(error);
-    res.status(402).json({
-      message: "Sorry error message from server ",
-    });
+    catchError()
   }
 };
 
@@ -72,11 +67,7 @@ const getAllRoom = async (req, res) => {
     console.log(build);
     res.status(200).json(build);
   } catch (error) {
-    console.error("Error fetching building:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
-    });
+    catchError()
   }
 };
 
@@ -102,11 +93,7 @@ const uploadRoom = async (req, res) => {
 
     res.status(200).json(findByBuild);
   } catch (error) {
-    console.error("Error in upload route:", error);
-    res.status(500).json({
-      message: "Internal Server Error",
-      error: error.message,
-    });
+    catchError()
   }
 };
 
@@ -115,10 +102,7 @@ const getAllBuilding = async (req, res) => {
     const BuildData = await BuildModel.find();
     res.status(200).json(BuildData);
   } catch (error) {
-    console.log(error);
-    res.status(404).json({
-      message: `error from backend${error}`,
-    });
+    catchError()
   }
 };
 
@@ -141,13 +125,13 @@ const uploadBuilding = async (req, res) => {
       message: "SuccussFully Uploaded",
     });
   } catch (error) {
-    console.log(error);
-    res.status(404).json({
-      message: `error from backend${error}`,
-    });
+    catchError()
   }
 };
 
+/*
+ TODO: Chnage needed in get ALL Boooks
+ */
 const getAllBookedRooms = async (req, res) => {
   try {
     const data = await BookModel.find();
@@ -156,12 +140,15 @@ const getAllBookedRooms = async (req, res) => {
         message:"THERE IS NO ONE BOOKED "
       })
     }*/ // front-end issue so we will soon
+   data.map((val)=>{
+    const dateFrom = new Date(val.from)
+    const dateto = new Date(val.to)
+    //console.log(dateFrom - dateto)
+   console.log(dateto.getDate()-dateFrom.getDate() )// TODO: change needed 
+   })
     res.status(200).json(data);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "SERVER ERROR IS FOUNDED",
-    });
+    catchError()
   }
 };
 
@@ -176,10 +163,7 @@ const TerminateBook = async (req, res) => {
     const data = await BookModel.find();
     res.status(200).json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      message: "Server error",
-    });
+    catchError()
   }
 };
 
@@ -191,10 +175,7 @@ const getSpecificTannent = async (req, res) => {
     console.log(data);
     res.status(200).json(data);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "server error",
-    });
+    catchError()
   }
 };
 
@@ -206,10 +187,7 @@ const deleteRoom = async (req, res) => {
       message: "just refresh",
     });
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "server error",
-    });
+    catchError()
   }
 };
 
@@ -231,7 +209,8 @@ const updateRoom = async (req, res) => {
 };
 
 const EditTannent = async (req, res) => {
-  console.log(req.body);
+  try {
+    console.log(req.body);
   const { name, address, region, country, state, TannentId } = req.body;
   const findandUpdate = await BookModel.findByIdAndUpdate(TannentId, {
     $set: {
@@ -246,6 +225,9 @@ const EditTannent = async (req, res) => {
   res.status(200).json({
     message: " succesfully Updated ",
   });
+  } catch (error) {
+    catchError()
+  }
 };
 
 const deleteBuilding = async (req, res) => {
@@ -256,10 +238,7 @@ const deleteBuilding = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "server error",
-    });
+    catchError()
   }
 };
 
@@ -269,14 +248,12 @@ const GetOneRoom = async (req, res) => {
     const findOne = await BuildModel.findById(id);
     res.status(200).json(findOne);
   } catch (error) {
-    console.log(error);
-    res.status(400).json({
-      message: "server error",
-    });
+    catchError()
   }
 };
 
 const UpdateBuilding = async (req, res) => {
+try {
   const { name, zip, state, address, city, id } = req.body;
   const upadteAll = await BuildModel.findByIdAndUpdate(id, {
     $set: {
@@ -290,14 +267,31 @@ const UpdateBuilding = async (req, res) => {
   res.status(200).json({
     message: "successFully Updated",
   });
+} catch (error) {
+  catchError()
+}
 };
 
 const SearchTannent = async (req, res) => {
+try {
   const { item } = req.params;
   const findbyitem = await BookModel.findOne({ name: item });
   console.log(findbyitem);
   res.status(200).json(findbyitem);
+} catch (error) {
+  catchError()
+}
 };
+
+const searchBuilding = async(req,res)=>{
+ try {
+  const buildname = req.headers
+  const search = await BuildModel.findOne({name: buildname})
+  res.status(200).json(search)
+ } catch (error) {
+  catchError()
+ }
+}
 
 
 module.exports = {
@@ -317,4 +311,5 @@ module.exports = {
   GetOneRoom,
   UpdateBuilding,
   SearchTannent,
+  searchBuilding
 };

@@ -21,6 +21,7 @@ const {
   UpdateBuilding,
   SearchTannent,
   terminatedBook,
+  searchBuilding,
 } = require("../controller/admin-controller");
 
 
@@ -74,6 +75,7 @@ router.post("/update-room",updateRoom)
 router.post("/update-tannent", EditTannent)
 
 router.get("/:item",SearchTannent)
+router.get("/searchbuilding", searchBuilding)
 
 
 
