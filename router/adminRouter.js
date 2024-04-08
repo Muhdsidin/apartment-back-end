@@ -3,6 +3,7 @@ const router = express.Router();
 const ProductModel = require("../models/Product-Model");
 const BuildModel = require("../models/Build-Model");
 const BookModel = require("../models/Book-Model");
+const DeleteModel = require("../models/Delete-Tannent");
 const {
   bookRoom,
   activeRoomList,
@@ -22,7 +23,10 @@ const {
   SearchTannent,
   terminatedBook,
   searchBuilding,
+  DeleteTannent,
+  
 } = require("../controller/admin-controller");
+
 
 
 router.post("/upload-building", uploadBuilding);
@@ -76,7 +80,18 @@ router.post("/update-tannent", EditTannent)
 
 router.get("/:item",SearchTannent)
 router.get("/searchbuilding", searchBuilding)
+router.post("/delete-tanennt",DeleteTannent)
 
+router.post("/get-delete", async (req, res) => {
+  try {
+    const data = await DeleteModel.find().populate("Deleted_tannent")
+    console.log(data);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error retrieving data from DeleteModel:", error);
+    res.status(500).json({ error: "Failed to retrieve data from DeleteModel" });
+  }
+});
 
 
 

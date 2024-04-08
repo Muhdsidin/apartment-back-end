@@ -1,8 +1,8 @@
 const BookModel = require("../models/Book-Model");
 const BuildModel = require("../models/Build-Model");
 const ProductModel = require("../models/Product-Model");
+const DeleteModel = require("../models/Delete-Tannent");
 const { catchError } = require("../utils/error");
-
 
 const bookRoom = async (req, res) => {
   try {
@@ -35,7 +35,7 @@ const bookRoom = async (req, res) => {
 
     res.status(200).json(upload);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -53,7 +53,7 @@ const activeRoomList = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -67,7 +67,7 @@ const getAllRoom = async (req, res) => {
     console.log(build);
     res.status(200).json(build);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -93,7 +93,7 @@ const uploadRoom = async (req, res) => {
 
     res.status(200).json(findByBuild);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -102,7 +102,7 @@ const getAllBuilding = async (req, res) => {
     const BuildData = await BuildModel.find();
     res.status(200).json(BuildData);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -125,7 +125,7 @@ const uploadBuilding = async (req, res) => {
       message: "SuccussFully Uploaded",
     });
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -140,15 +140,15 @@ const getAllBookedRooms = async (req, res) => {
         message:"THERE IS NO ONE BOOKED "
       })
     }*/ // front-end issue so we will soon
-   data.map((val)=>{
-    const dateFrom = new Date(val.from)
-    const dateto = new Date(val.to)
-    //console.log(dateFrom - dateto)
-   console.log(dateto.getDate()-dateFrom.getDate() )// TODO: change needed 
-   })
+    data.map((val) => {
+      const dateFrom = new Date(val.from);
+      const dateto = new Date(val.to);
+      //console.log(dateFrom - dateto)
+      console.log(dateto.getDate() - dateFrom.getDate()); // TODO: change needed
+    });
     res.status(200).json(data);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -156,14 +156,15 @@ const TerminateBook = async (req, res) => {
   try {
     const { BookId } = req.body;
 
-    const terminate = await BookModel.findByIdAndUpdate(BookId , {$set:{terminate:true}})
-
-
+    const terminate = await BookModel.findByIdAndUpdate(BookId, {
+      $set: { terminate: true },
+    });
+    
 
     const data = await BookModel.find();
     res.status(200).json(data);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -175,7 +176,7 @@ const getSpecificTannent = async (req, res) => {
     console.log(data);
     res.status(200).json(data);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -187,7 +188,7 @@ const deleteRoom = async (req, res) => {
       message: "just refresh",
     });
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -211,22 +212,22 @@ const updateRoom = async (req, res) => {
 const EditTannent = async (req, res) => {
   try {
     console.log(req.body);
-  const { name, address, region, country, state, TannentId } = req.body;
-  const findandUpdate = await BookModel.findByIdAndUpdate(TannentId, {
-    $set: {
-      name,
-      address,
-      region,
-      country,
-      state,
-    },
-  });
+    const { name, address, region, country, state, TannentId } = req.body;
+    const findandUpdate = await BookModel.findByIdAndUpdate(TannentId, {
+      $set: {
+        name,
+        address,
+        region,
+        country,
+        state,
+      },
+    });
 
-  res.status(200).json({
-    message: " succesfully Updated ",
-  });
+    res.status(200).json({
+      message: " succesfully Updated ",
+    });
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -238,7 +239,7 @@ const deleteBuilding = async (req, res) => {
 
     res.status(200).json(result);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
@@ -248,54 +249,79 @@ const GetOneRoom = async (req, res) => {
     const findOne = await BuildModel.findById(id);
     res.status(200).json(findOne);
   } catch (error) {
-    catchError()
+    catchError();
   }
 };
 
 const UpdateBuilding = async (req, res) => {
-try {
-  const { name, zip, state, address, city, id } = req.body;
-  const upadteAll = await BuildModel.findByIdAndUpdate(id, {
-    $set: {
-      name,
-      zip,
-      state,
-      address,
-      city,
-    },
-  });
-  res.status(200).json({
-    message: "successFully Updated",
-  });
-} catch (error) {
-  catchError()
-}
+  try {
+    const { name, zip, state, address, city, id } = req.body;
+    const upadteAll = await BuildModel.findByIdAndUpdate(id, {
+      $set: {
+        name,
+        zip,
+        state,
+        address,
+        city,
+      },
+    });
+    res.status(200).json({
+      message: "successFully Updated",
+    });
+  } catch (error) {
+    catchError();
+  }
 };
 
 const SearchTannent = async (req, res) => {
-try {
-  const { item } = req.params;
-  const findbyitem = await BookModel.findOne({ name: item });
-  console.log(findbyitem);
-  res.status(200).json(findbyitem);
-} catch (error) {
-  catchError()
-}
+  try {
+    const { item } = req.params;
+    const findbyitem = await BookModel.findOne({ name: item });
+    console.log(findbyitem);
+    res.status(200).json(findbyitem);
+  } catch (error) {
+    catchError();
+  }
 };
 
-const searchBuilding = async(req,res)=>{
- try {
-  const buildname = req.headers
-  const search = await BuildModel.findOne({name: buildname})
-  res.status(200).json(search)
- } catch (error) {
-  catchError()
- }
-}
+const searchBuilding = async (req, res) => {
+  try {
+    const buildname = req.headers;
+    const search = await BuildModel.findOne({ name: buildname });
+    res.status(200).json(search);
+  } catch (error) {
+    catchError();
+  }
+};
+
+const DeleteTannent = async (req, res) => {
+  const { id } = req.body;
+
+  // Find the existing Delete document (if any)
+  let deleteDocument = await DeleteModel.findOne();
+
+  if (!deleteDocument) {
+    deleteDocument = new DeleteModel({});
+  }
+
+  deleteDocument.Deleted_tannent.push(id);
+
+  await deleteDocument.save();
+
+  const RealDelete = await BookModel.findByIdAndDelete(id)
+
+  res
+    .status(201)
+    .json({
+      message: "ID added to Deleted_tannent array successfully",
+      document: deleteDocument,
+    });
+};
+
 
 
 module.exports = {
-  bookRoom,
+  bookRoom, 
   activeRoomList,
   getAllRoom,
   uploadRoom,
@@ -305,11 +331,13 @@ module.exports = {
   TerminateBook,
   getSpecificTannent,
   deleteRoom,
-  updateRoom, 
+  updateRoom,
   EditTannent,
   deleteBuilding,
   GetOneRoom,
   UpdateBuilding,
   SearchTannent,
-  searchBuilding
+  searchBuilding,
+  DeleteTannent,
+ 
 };
