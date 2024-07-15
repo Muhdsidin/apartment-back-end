@@ -24,8 +24,10 @@ const {
   terminatedBook,
   searchBuilding,
   DeleteTannent,
+  CheckAdmin,
   
 } = require("../controller/admin-controller");
+const AdminModel = require("../models/Admin-model");
 
 
 
@@ -92,6 +94,15 @@ router.post("/get-delete", async (req, res) => {
     res.status(500).json({ error: "Failed to retrieve data from DeleteModel" });
   }
 });
+
+// router.post("/test",async(req,res)=>{
+//   await AdminModel.create({email :"hello world ", password:"hash123"})
+//   res.status(200).json({
+//     message:"created succesfully"
+//   })
+// })
+
+router.post("/admin-login",CheckAdmin)
 
 
 

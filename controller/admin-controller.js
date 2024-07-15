@@ -3,6 +3,7 @@ const BuildModel = require("../models/Build-Model");
 const ProductModel = require("../models/Product-Model");
 const DeleteModel = require("../models/Delete-Tannent");
 const { catchError } = require("../utils/error");
+const AdminModel = require("../models/Admin-model");
 
 const bookRoom = async (req, res) => {
   try {
@@ -318,9 +319,26 @@ const DeleteTannent = async (req, res) => {
     });
 };
 
+const CheckAdmin = async(req,res)=>{
+  try {
+    const {email , password} = req.body
+    const admin = await AdminModel.findOne({email})
+
+    if(!admin){
+      return res.status(404).json({message:"admin not found"})
+    }
+    
+
+    res.status(200).json(admin._id)
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 
 
 module.exports = {
+  CheckAdmin,
   bookRoom, 
   activeRoomList,
   getAllRoom,
